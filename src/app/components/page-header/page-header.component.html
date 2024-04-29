@@ -1,0 +1,27 @@
+<ion-header [translucent]="true">
+  <ion-toolbar class="d-flex">
+    <ion-buttons slot="start">
+      <ion-button *ngIf="isCancel || isBack" slot="start" fill="clear" (click)="onBackbutton()" class="ion-no-margin">
+        <ion-icon name="chevron-back-outline" class="text-large text-bold me-2"></ion-icon>
+        <span *ngIf="isCancel">Cancel</span>
+        <span *ngIf="isBack">Back</span>
+      </ion-button>
+    </ion-buttons>
+    <ion-title><ion-img class="mx-auto" src="./assets/icon/logo.png"></ion-img></ion-title>
+    
+    <!-- <div *ngIf="chatStatus.length>0" class="d-flex flex-column ps-3">
+      <ion-img class="mt-2" src="./assets/icon/logo.png"></ion-img>
+      <div class="d-flex ion-align-items-center">
+        <ion-icon [color]="chatStatus==='online' ? 'success' : 'danger'" class="me-2" name="ellipse"></ion-icon>
+        <p class="text-small text-bold">
+          {{isTyping ? 'is typing...' : chatStatus}}
+        </p>
+      </div>
+    </div> -->
+  </ion-toolbar>
+</ion-header>
+
+
+<!-- <ion-buttons slot="start" *ngIf="isMenu">
+  <ion-menu-button></ion-menu-button>
+</ion-buttons> -->

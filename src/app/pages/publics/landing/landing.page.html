@@ -1,0 +1,59 @@
+<app-page-header title="Landing"></app-page-header>
+
+<ion-content [fullscreen]="true">
+  <ion-row>
+    <ion-col size="12" size-md="4" class="mx-auto px-1 py-3">
+      <ion-row class="mt-5" *ngIf="!PageData.validStatus && PageData.Loaded">
+        <ion-col size="12" class="d-flex ion-justify-content-center">
+          Wellcome to Giv2Pay. Your link address is incorrect. Please check it again.
+        </ion-col>
+        <ion-col size="12" class="d-flex flex-column ion-align-items-center ion-justify-content-center">
+          <div class="mt-3">
+            <ion-label>Or You can Write your Access Code and click Login.</ion-label>
+            <ion-input type="text" class="mt-3" [(ngModel)]="PageData.Token"></ion-input>
+          </div>
+          <div>
+            <ion-button class="mt-3" (click)="onLogin()">Login</ion-button>
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="mt-5" *ngIf="PageData.validStatus && PageData.validStatus!==ValidStatus.Valid">
+        <ion-col size="12" class="d-flex ion-justify-content-center">
+          <div [class]="PageData.validStatus===ValidStatus.Expire ? 'timerBoxRed' : 'timerBoxGreen'">
+            <ion-text class="timer m-auto">{{PageData.counter | formatTime}}</ion-text>
+          </div>
+        </ion-col>
+        <ion-col size="12" class="d-flex ion-justify-content-center">
+          <div class="p-2">
+            <ion-title class="p-0">Hello Jack</ion-title>
+            <ion-text class="m-auto" *ngIf="PageData.validStatus===ValidStatus.Expire">Your reserved time was
+              <span>“{{PageData.validTo |
+                date: 'short'}}”</span> You have logged in
+              later than the specified time. If the admin allows it, you can enter.</ion-text>
+
+            <ion-text class="m-auto" *ngIf="PageData.validStatus===ValidStatus.Soon">Your reserved time is
+              <span>“{{PageData.validFrom | date:
+                'short'}}” </span>You have logged in earlier than the specified time. If the admin allows it, you can
+              enter.</ion-text>
+          </div>
+        </ion-col>
+        <ion-col size="12" class="d-flex flex-column ion-justify-content-center text-center">
+          <ion-button fill="clear" color="primary" (click)="onRequestBtn()" [disabled]="PageData.requestBtn">
+            Request
+          </ion-button>
+          <ion-text *ngIf="PageData.requestStatus === RequestStatus.Waiting">Waiting...</ion-text>
+          <ion-text color="success" *ngIf="PageData.requestStatus === RequestStatus.Confirmed">Confirmed. You will enter
+            in a few
+            moments...</ion-text>
+          <ion-text color="danger" *ngIf="PageData.requestStatus === RequestStatus.Reject">Sorry, please reserve new
+            time.</ion-text>
+          <ion-button fill="clear" color="primary" *ngIf="PageData.requestStatus === RequestStatus.Reject"
+            [routerLink]="['./reserve']">
+            Reserve
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+  </ion-row>
+</ion-content>

@@ -1,0 +1,35 @@
+<app-page-header [isBack]="true"></app-page-header>
+
+<ion-content [fullscreen]="true">
+  <ion-row>
+    <ion-col size="12" size-md="4" class="mx-auto px-1 py-3">
+      <ion-row class="m-3">
+        <ion-col size="12">
+          <ion-text class="text-bold">
+            Please select the date and time:
+          </ion-text>
+        </ion-col>
+        <ion-col size="12" class="mt-2">
+          <ion-radio-group value="1">
+            <div class="d-flex flex-column row-gap ion-align-items-start">
+              <ion-radio slot="end" value="1" labelPlacement="end" color="dark">2023-01-05 - 8:00</ion-radio>
+              <ion-radio slot="end" value="2" labelPlacement="end" color="dark">2023-01-05 - 8:20</ion-radio>
+              <ion-radio slot="end" value="3" labelPlacement="end" color="dark" [disabled]="true">2023-01-05 - 8:40
+                (Reserved)</ion-radio>
+              <ion-radio slot="end" value="4" labelPlacement="end" color="dark">2023-01-05 - 9:00</ion-radio>
+              <ion-radio slot="end" value="5" labelPlacement="end" color="dark" [disabled]="true">2023-01-05 - 9:20
+                (Reserved)</ion-radio>
+              <ion-radio slot="end" value="6" labelPlacement="end" color="dark">2023-01-05 - 9:40</ion-radio>
+            </div>
+          </ion-radio-group>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+  </ion-row>
+</ion-content>
+
+<ion-footer class="p-2 d-flex ion-justify-content-center ion-align-items-center">
+  <ion-button class="ion-no-margin">
+    <span class="text-bold">Submit</span>
+  </ion-button>
+</ion-footer>

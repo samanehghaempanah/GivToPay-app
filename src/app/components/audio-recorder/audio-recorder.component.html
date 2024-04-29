@@ -1,0 +1,61 @@
+<div class="audiobox">
+  <!-- <ion-icon name="mic-circle-sharp" color="primary" *ngIf="!Recording && !blobUrl"
+  (click)="startRecording()"></ion-icon> -->
+
+  <ion-icon name="stop-circle-sharp" color="danger" *ngIf="Recording && !blobUrl" (click)="stopRecording()"></ion-icon>
+
+  <span *ngIf="Recording && !blobUrl"> {{recordedTime}} </span>
+
+  <ion-icon name="trash-sharp" color="dark" *ngIf="!Recording && blobUrl" (click)="cancelRecording()"></ion-icon>
+
+  <audio *ngIf="!Recording && blobUrl" crossorigin controls>
+    <source [src]="blobUrl" type="audio/webm">
+  </audio>
+</div>
+
+<!-- 
+<div>
+  <div class="audio green-audio-player">
+    <div class="loading">
+      <div class="spinner"></div>
+    </div>
+    <div class="play-pause-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
+        <path fill="#566574" fill-rule="evenodd" d="M18 12L0 24V0" class="play-pause-icon" id="playPause" />
+      </svg>
+    </div>
+
+    <div class="controls">
+      <span class="current-time">0:00</span>
+      <div class="slider" data-direction="horizontal">
+        <div class="progress">
+          <div class="pin" id="progress-pin" data-method="rewind"></div>
+        </div>
+      </div>
+      <span class="total-time">0:00</span>
+    </div>
+
+    <audio crossorigin>
+      <source [src]="blobUrl" type="audio/webm">
+    </audio>
+  </div>
+</div> -->
+
+<!-- <div>
+  <button class="start-button" *ngIf="!Recording && !blobUrl" (click)="startRecording()">Start Recording</button>
+
+  <button class="stop-button" *ngIf="Recording && !blobUrl" (click)="stopRecording()">Stop Recording</button>
+
+  <button class="cancel-button" *ngIf="!Recording && blobUrl" (click)="clearRecordedData()">Clear Recording</button>
+
+  <br>
+  <button class="cancel-button" *ngIf="!Recording && blobUrl" (click)="download()">Download Recording</button>
+
+  <br>
+  <button class="cancel-button" *ngIf="!Recording && blobUrl" (click)="base64()">Log Base64</button>
+
+  <div *ngIf="Recording && !blobUrl"> {{recordedTime}} </div>
+  <div *ngIf="!Recording && blobUrl">
+    <app-audio-recorder [src]="blobUrl" type="audio/webm"></app-audio-recorder>
+  </div>
+</div> -->

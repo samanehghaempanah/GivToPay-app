@@ -1,0 +1,263 @@
+<app-page-header chatStatus="online" [isTyping]="PageData.isTyping"></app-page-header>
+
+<ion-content [fullscreen]="true">
+
+  <div *ngIf="!PageData.Loaded" class="text-center mt-5"><ion-spinner></ion-spinner></div>
+
+  <ion-row *ngIf="PageData.Loaded">
+    <ion-col size="11" size-md="4" class="mx-auto px-0 py-3 pb-0">
+      <div *ngIf="Messages.length === 0" class="d-flex flex-column ion-align-items-center">
+        <div class="firstBox mb-3 p-2 w-100 d-flex flex-column ion-align-items-center">
+          <ion-icon name="diamond-outline" class="text-xlarge my-2"></ion-icon>
+          <ion-text class="text-large text-bold">Example</ion-text>
+          <p class="text-style text-center">
+            Buy me a gallon of Organic Valley or Great Value milk and a
+            Family-size pack of chips.
+            <br />
+            Buy me 1 lb yellow onion.
+            <br />
+            Suggest Herbal or natural toothpaste.
+          </p>
+        </div>
+        <div class="firstBox mb-3 p-2 w-100 d-flex flex-column ion-align-items-center">
+          <ion-icon name="sparkles-outline" class="text-xlarge my-2"></ion-icon>
+          <ion-text class="text-large text-bold">Capabilities</ion-text>
+          <p class="text-style text-center">
+            Tell it what you need. It will buy it for you Ask what product is
+            suitable for you. It will suggest you Select between suggestions. It
+            will buy for you..
+          </p>
+        </div>
+        <div class="firstBox mb-3 p-2 w-100 d-flex flex-column ion-align-items-center">
+          <ion-icon name="ban-outline" class="text-xlarge my-2"></ion-icon>
+          <ion-text class="text-large text-bold">Limitations</ion-text>
+          <p class="text-style text-center">
+            Providing illegal products is not possible Purchase or suggestion is
+            made with a delay of up to one day It may occasionally not be able
+            to find the products you are looking for.
+          </p>
+        </div>
+        <div class="w-100 d-flex flex-column ion-align-items-center px-4 mb-3 p-2 ">
+          <!-- <div [ngClass]="orders.length===0 ? 'disabled' : ''" class="historyBox w-100 d-flex ion-justify-content-between ion-align-items-center p-2 px-3" [routerLink]="['/history']"> -->
+          <div *ngIf="orders.length>0" class="d-flex ion-justify-content-between ion-align-items-center p-2 px-3"
+            [routerLink]="['/history']">
+            <ion-text>Go to History</ion-text>
+            <!-- <ion-icon name="arrow-forward-outline" class="text-xlarge"></ion-icon> -->
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="Messages.length > 0">
+        <div *ngFor="let msg of Messages">
+          <div *ngIf="msg.MessageType !== MessageType.ShoppingList">
+            <div *ngIf="msg.MessageType===MessageType.Text"
+              [class]="msg.IsCustomer ? 'chatBoxMe d-flex flex-row' : 'chatBoxGiv d-flex flex-row'">
+              <p [class]="msg.IsCustomer ? 'from-me m-2 p-3 w-75' : 'from-them m-2 p-3 w-75'">
+                {{msg.Message}}
+              </p>
+            </div>
+            <div *ngIf="msg.MessageType===MessageType.Voice"
+              [class]="msg.IsCustomer ? 'chatBoxMe d-flex flex-row' : 'chatBoxGiv d-flex flex-row'">
+              <audio crossorigin controls>
+                <source [src]="msg.Message" type="audio/webm">
+              </audio>
+            </div>
+            <div class="d-flex flex-row ion-align-items-center"
+              [ngClass]="msg.IsCustomer ? 'ion-justify-content-end': 'ion-justify-content-start'">
+              <ion-icon *ngIf="msg.MessageStatus=== MessageStatus.Draft && msg.IsCustomer" name="ellipse-outline"
+                class="mx-1" color="primary" style="opacity: 0.6"></ion-icon>
+              <ion-icon *ngIf="msg.MessageStatus=== MessageStatus.ReceivedByServer && msg.IsCustomer"
+                name="checkmark-circle-outline" class="mx-1" color="primary" style="opacity: 0.6"></ion-icon>
+              <ion-icon *ngIf="msg.MessageStatus=== MessageStatus.Delivered && msg.IsCustomer"
+                name="checkmark-done-circle-outline" class="mx-1" color="primary" style="opacity: 0.6"></ion-icon>
+              <ion-icon *ngIf="msg.MessageStatus=== MessageStatus.Seen && msg.IsCustomer" name="checkmark-done-circle"
+                class="mx-1" color="primary" style="opacity: 0.6"></ion-icon>
+              <ion-text class="text-small text-light" color="{{msg.IsCustomer ? 'primary' : 'medium'}}"
+                style="opacity: 0.6">{{msg.Creation_date | date:'YYYY/MM-dd - HH:mm':'GMT+2'}}</ion-text>
+            </div>
+          </div>
+
+          <div class="mx-auto" *ngIf="msg.MessageType === MessageType.ShoppingList && msg.OrderItems.length > 0">
+            <ion-card class="shoppingCard my-3">
+              <ion-card-header class="p-2 pt-4">
+                <ion-card-title class="listTitle">Your Shopping List:</ion-card-title>
+              </ion-card-header>
+              <ion-card-content class="p-1">
+                <ion-row *ngFor="let item of msg.OrderItems">
+                  <ion-col size="12" class="shoppingList">
+                    <div class="d-flex">
+                      <div class="d-flex me-2" *ngIf="msg.Editable">
+                        <ion-icon name="remove-circle-sharp" color="danger" (click)="onDeleteItem(msg, item)"
+                          class="text-xlarge"></ion-icon>
+                      </div>
+                      <div class="d-flex flex-column ion-justify-content-center"  (click)="onEditItem(msg, item)">
+                        <div>
+                          <ion-label class="listTitle">
+                            {{item.Title && item.Title.length> 0 ? item.Title : ''}}
+                            {{item.Brand && item.Brand.length> 0 ? ' / ' + item.Brand : ''}}
+                            {{item.Quantity && item.Quantity> 0 ? ' / ' + item.Quantity : ''}}
+                            {{item.Unit && item.Unit.length> 0 ? ' / ' + item.Unit : ''}}
+                          </ion-label>
+                        </div>
+                        <div>
+                          <ion-text>{{item.Description}}</ion-text>
+                        </div>
+                      </div>
+                      <div *ngIf="msg.Editable" class="d-flex ion-justify-content-end" style="flex: 1">
+                        <ion-button fill="clear" size="small" class="editButton" style="min-width:auto !important;" (click)="onEditItem(msg, item)">Edit</ion-button>
+                        <!-- <ion-icon name="create-outline" color="primary" class="text-xlarge"
+                          (click)="onEditItem(msg, item)"></ion-icon> -->
+                      </div>
+                    </div>
+                  </ion-col>
+                </ion-row>
+
+                <ion-row *ngIf="msg.Editable" class="shoppingListBtn">
+                  <ion-col size="12" class="firstBtn ion-text-center">
+                    <ion-button fill="clear" (click)="onSubmit(OrderType.Buy)" class="text-bold">
+                      Choose the best prices
+                    </ion-button>
+                  </ion-col>
+                  <ion-col size="12" class="ion-text-center">
+                    <ion-button fill="clear" (click)="onSubmit(OrderType.Suggestion)">
+                      Find a list of suggestions
+                    </ion-button>
+                  </ion-col>
+                </ion-row>
+              </ion-card-content>
+            </ion-card>
+            <div class="d-flex flex-row ion-justify-content-start ion-align-items-center">
+              <ion-text class="text-small text-light mx-3" color="medium" style="opacity: 0.6">{{msg.Creation_date |
+                date:'YYYY/MM-dd - HH:mm':'GMT+2'}}</ion-text>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="PageData.isTyping" class="chatBoxGiv d-flex flex-row">
+          <p class="from-them m-2 p-1">
+            <ion-img class="typingImg" src="./assets/icon/dot-spinner2.gif"></ion-img>
+          </p>
+        </div>
+      </div>
+    </ion-col>
+  </ion-row>
+  <ion-alert [isOpen]="PageData.alertIsOpen" header="Thank You" message="{{PageData.alertText}}"
+    [buttons]="alertButtons" (didDismiss)="this.PageData.alertIsOpen=false;" mode="ios">
+  </ion-alert>
+
+</ion-content>
+
+<ion-footer *ngIf="PageData.Loaded" class="d-flex ion-align-items-center ion-no-border p-2">
+
+  <ion-button *ngIf="Messages.length === 0" class="w-100" style="height: 45px !important;" (click)="onWellcome()">
+    Let's start your new order
+  </ion-button>
+
+  <ion-row *ngIf="Messages.length > 0" class="w-100">
+    <ion-col size="11" size-md="6" class="mx-auto p-0">
+
+      <div class="footerBox mx-2 d-flex ion-align-items-center ion-justify-content-between w-100">
+
+        <div class="d-flex w-100">
+
+          <div *ngIf="PageData.AudioRecorder.Status" class="d-flex flex-1 ion-align-items-center ps-3">
+            <ion-text *ngIf="PageData.AudioRecorder.Status === 'recording'" color="primary">
+              {{PageData.AudioRecorder.recordedTime}} </ion-text>
+            <div class="d-flex flex-1 ion-justify-content-around ion-align-items-center">
+
+              <ion-icon *ngIf="PageData.AudioRecorder.Status === 'ready'" (click)="cancelRecording()" name="trash-sharp"
+                color="medium" class="text-xlarge"></ion-icon>
+              <audio *ngIf="PageData.AudioRecorder.Status === 'ready' && PageData.AudioRecorder.blobUrl" crossorigin
+                controls>
+                <source [src]="PageData.AudioRecorder.blobUrl" type="audio/webm">
+              </audio>
+
+              <div *ngIf="PageData.AudioRecorder.Status === 'uploading'"
+                class="d-flex ion-justify-content-evenly ion-align-items-center w-50">
+                <ion-spinner color="success"></ion-spinner>
+                <ion-text color="success">
+                  {{fileUploaderService.Progress}}%
+                </ion-text>
+              </div>
+            </div>
+          </div>
+
+          <ion-item *ngIf="!PageData.AudioRecorder.Status" lines="none">
+            <ion-input type="text" name="Text"
+              placeholder="{{Messages.length > 1 ? '' : 'Tell me your needs...'}}" autocomplete="off"
+              (keyup.enter)="sendMessage()" (input)="sendTyping()" debounce="500" [(ngModel)]="PageData.SendMessageText"
+              [autofocus]="true"></ion-input>
+          </ion-item>
+
+        </div>
+
+        <div class="sendBtnBox d-flex p-1">
+
+          <ion-icon name="arrow-up-circle-sharp" color="primary"
+            *ngIf="PageData.SendMessageText!=='' || PageData.AudioRecorder.Status==='ready'"
+            (click)="sendMessage()"></ion-icon>
+
+          <ion-icon name="mic-circle-sharp" [color]="(PageData.AudioRecorder.Status) ? 'danger' : 'primary'"
+            *ngIf="PageData.SendMessageText==='' && PageData.AudioRecorder.Status!=='ready'"
+            (click)="onRecording()"></ion-icon>
+
+        </div>
+      </div>
+
+    </ion-col>
+  </ion-row>
+</ion-footer>
+
+<ion-modal [isOpen]="isModalOpen" trigger="open-modal">
+  <ng-template>
+    <ion-content class="ion-padding">
+      <div class="text-center text-xlarge my-2">
+        <ion-text class="text-bold">Edit Suggestion(s)</ion-text>
+      </div>
+      <ion-list lines="none">
+        <ion-item color="light" class="my-2">
+          <ion-label class="w-25 text-bold">Title:</ion-label>
+          <ion-input type="text" class="w-75" [(ngModel)]="itemData.Title"></ion-input>
+          <!-- <ion-searchbar class="p-0" style="width:72%; height:35px;" [debounce]="1000" (ionInput)="handleInput($event)" [(ngModel)]="itemData.Title"></ion-searchbar> -->
+
+          <!-- <ion-list>
+            <ion-item *ngFor="let result of results">
+              <ion-label>{{ result }}</ion-label>
+            </ion-item>
+          </ion-list> -->
+        </ion-item>
+        <ion-item color="light" class="my-2">
+          <ion-label class="w-25 text-bold">Brand:</ion-label>
+          <ion-input type="text" class="w-75" [(ngModel)]="itemData.Brand"></ion-input>
+          <!-- <ion-searchbar class="p-0" style="width:72%; height:35px;" [debounce]="1000" (ionInput)="handleInput($event)" [(ngModel)]="itemData.Brand"></ion-searchbar> -->
+        </ion-item>
+        <ion-item color="light" class="my-2">
+          <ion-label class="w-25 text-bold">Unit:</ion-label>
+          <ion-input type="text" class="w-75" [(ngModel)]="itemData.Brand"></ion-input>
+          <!-- <ion-list style="width:72%; height:36px; border-radius:10px;">
+            <ion-item>
+              <ion-select [(ngModel)]="itemData.Unit" label="{{itemData.Unit}}" aria-label="Unit"
+                justify="space-between">
+                <ion-select-option value="Kg">Kg</ion-select-option>
+                <ion-select-option value="Btl">Btl</ion-select-option>
+                <ion-select-option value="Ltr">Ltr</ion-select-option>
+                <ion-select-option value="Itm">Itm</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-list> -->
+        </ion-item>
+        <ion-item color="light" class="my-2">
+          <ion-label class="w-25 text-bold">QTY:</ion-label>
+          <ion-input type="number" class="w-75" [(ngModel)]="itemData.Quantity"></ion-input>
+        </ion-item>
+        <ion-item color="light" class="my-2">
+          <ion-label position="stacked" class="text-bold mb-2">Description:</ion-label>
+          <ion-textarea [(ngModel)]="itemData.Description"></ion-textarea>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+    <ion-footer class="d-flex ion-justify-content-evenly ion-align-items-center">
+      <ion-button class="m-0" fill="clear" (click)="cancel()"> Cancel </ion-button>
+      <ion-button class="m-0" fill="clear" (click)="confirm()" [strong]="true"> Ok </ion-button>
+    </ion-footer>
+  </ng-template>
+</ion-modal>

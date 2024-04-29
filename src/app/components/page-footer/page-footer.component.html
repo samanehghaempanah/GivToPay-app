@@ -1,0 +1,23 @@
+<ion-footer class="d-flex flex-column w-100 py-1">
+  <div class="footerBox d-flex ion-align-items-center ion-justify-content-between">
+    <div class="mx-3">
+      <div class="d-flex ion-align-items-center">
+        <ion-icon name="cart-sharp" class="text-large"></ion-icon>
+        <ion-text class="mx-2">{{totalOrder}}</ion-text>
+      </div>
+      <ion-text color="medium">{{ title }}</ion-text>
+    </div>
+
+    <div class="suggestionPageBox me-2 d-flex flex-column ion-align-items-center">
+      <ion-text class="mx-2">$ {{totalCount}}</ion-text>
+    </div>
+  </div>
+  <div class="p-2 d-flex ion-justify-content-center">
+    <ion-button *ngIf="isNext" [disabled]="nextDisabled" (click)="onNextbutton()" class="flex-1  ion-no-margin">
+      <span class="text-bold">Next</span>
+    </ion-button>
+    <ion-button *ngIf="isSubmit" [disabled]="submitDisabled" (click)="onSubmitbutton()" class="flex-1 ion-no-margin">
+      <span>Submit</span>
+    </ion-button>
+  </div>
+</ion-footer>

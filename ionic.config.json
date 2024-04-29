@@ -1,0 +1,10 @@
+{
+  "name": "giv2pay.mvp1.client",
+  "integrations": {
+    "capacitor": {
+      "enabled": false
+    },
+    "cordova": {}
+  },
+  "type": "angular"
+}

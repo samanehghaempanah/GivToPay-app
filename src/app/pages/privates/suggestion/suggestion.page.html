@@ -1,0 +1,43 @@
+<app-page-header></app-page-header>
+
+<ion-content [fullscreen]="true">
+  <ion-row>
+    <ion-col size="12" size-md="6" class="mx-auto px-0 py-3">
+      <div *ngFor="let item of orderInfo.Items" class="mt-3">
+        <div
+          *ngIf="item.ItemStatus===itemStatus.Found || item.ItemStatus===itemStatus.NotFound && item.Products.length>0">
+          <ion-row>
+            <ion-col class="d-flex ion-align-items-center column-gap">
+              <ion-icon name="checkmark-circle" color="primary" class="text-large"></ion-icon>
+              <ion-text class="text-bold"> {{item.Title && item.Title.length> 0 ? item.Title : ''}}
+                {{item.Unit &&
+                item.Unit.length> 0 ? '/ ' + item.Unit : ''}}
+                {{item.Brand &&
+                item.Brand.length> 0 ? '/ ' + item.Brand : ''}}</ion-text>
+            </ion-col>
+          </ion-row>
+          <ion-row class="product-list">
+            <ion-col *ngFor="let product of item.Products" size="4">
+              <app-product [productInfo]="product" (addToBasket)="add(product)" (removeFromBasket)="remove(product)"
+                (addItem)="inc(product)" (removeItem)="dec(product)"></app-product>
+            </ion-col>
+          </ion-row>
+          <hr class="my-1" />
+        </div>
+
+        <ion-row *ngIf="item.ItemStatus===itemStatus.Draft" class="disabled">
+          <ion-col class="d-flex ion-align-items-center column-gap">
+            <span class="dot-spinner"></span>
+            <ion-text class="text-bold text-wrap"> {{item.Title}} </ion-text>
+          </ion-col>
+        </ion-row>
+        <ion-img *ngIf="item.ItemStatus===itemStatus.Draft" src="./assets/icon/waiting.gif" style="width: 100px; margin: 20px"></ion-img>
+      </div>
+
+    </ion-col>
+  </ion-row>
+</ion-content>
+
+<app-page-footer title="Order#: {{orderId}}" [totalOrder]="selectedProducts.length>0 ? selectedProducts.length : 0"
+  [totalCount]="selectedProducts.length>0 ? orderInfo.Paid : 0" [isNext]="true" [nextDisabled]="selectedProducts.length===0"
+  (nextChange)="goToVeiw()"></app-page-footer>

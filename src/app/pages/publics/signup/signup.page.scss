@@ -1,0 +1,23 @@
+.form-box {
+    background: #D7DCED;
+    border-radius: 10px;
+
+    ion-input{
+        text-align: start !important;
+    }
+}
+
+.google-btn {
+    background: #FFFFFF;
+    border-radius: 10px;
+
+    ion-img {
+        width: 17px;
+        height: 17px;
+    }
+
+    ion-text {
+        color: var(--ion-color-dark);
+        font-weight: 500;
+    }
+}

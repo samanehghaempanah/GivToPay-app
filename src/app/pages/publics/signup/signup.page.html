@@ -1,0 +1,75 @@
+<app-page-header title="Sign Up/ Login"></app-page-header>
+
+<ion-content [fullscreen]="true" class="ion-text-center ion-padding">
+  <ion-row>
+    <ion-col size="11" size-md="4" class="mx-auto px-1 py-3">
+      <ion-row>
+        <ion-col size="12" class="mx-auto mt-3 mb-5">
+          <ion-title color="primary" class="text-large">Sign Up</ion-title>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="p-0">
+          <ion-card class="form-box m-0">
+            <ion-card-content class="p-2">
+              <ion-col size="12">
+                <ion-input
+                  placeholder="Email"
+                  autofocus="true"
+                  [(ngModel)]="PageData.Item.Username"
+                  name="Username"
+                  type="email"
+                  inputmode="email"
+                  maxlength="255"
+                ></ion-input>
+              </ion-col>
+              <ion-col size="12">
+                <ion-input
+                  placeholder="Password"
+                  autofocus="true"
+                  [(ngModel)]="PageData.Item.Password"
+                  name="Password"
+                  type="password"
+                  enterkeyhint="enter"
+                  inputmode="text"
+                  maxlength="255"
+                ></ion-input>
+              </ion-col>
+              <ion-col size="12">
+                <ion-button
+                  color="secondary"
+                  class="ion-margin-top"
+                  (click)="onLogin()"
+                  >Sign up</ion-button
+                >
+              </ion-col>
+              <ion-col size="12" class="my-1">
+                <ion-text color="primary">
+                  <p>
+                    If you have an account,<br />
+                    enter your email and password
+                  </p>
+                </ion-text>
+              </ion-col>
+              <ion-col size="12">
+                <ion-text color="secondary" class="ion-margin-top"
+                  >Forget password?</ion-text
+                >
+              </ion-col>
+              <ion-col size="12">
+                <ion-card class="google-btn w-75 mx-auto">
+                  <ion-card-content
+                    class="p-2 d-flex flex-row ion-align-items-center"
+                  >
+                    <ion-img src="./assets/icon/Group.png"></ion-img>
+                    <ion-text class="mx-auto">Sign in with Google</ion-text>
+                  </ion-card-content>
+                </ion-card>
+              </ion-col>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+  </ion-row>
+</ion-content>

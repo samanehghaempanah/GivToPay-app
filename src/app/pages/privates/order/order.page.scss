@@ -1,0 +1,39 @@
+ion-item {
+  --border-color: #ebeef8;
+  display: flex;
+  flex-direction: column;
+}
+
+hr {
+  width: 95%;
+  height: 2px;
+  background-color: rgba(0, 22, 219, 0.2);
+}
+
+.column-gap {
+  column-gap: 5px;
+}
+
+.dot-spinner {
+  width: 15px;
+  height: 15px;
+  border: 1px solid;
+  border-radius: 50%;
+  margin-left: 2px;
+  background: url("../../../../assets/icon/dot-spinner.gif");
+  background-position: center;
+  background-size: cover;
+}
+
+.disabled {
+  cursor: default;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+ion-footer {
+  height: 60px !important;
+  ion-button {
+    width: 90% !important;
+  }
+}
